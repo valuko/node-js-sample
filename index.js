@@ -15,7 +15,7 @@ app.get('/', function(request, response) {
 })
 
 app.post('/api/register', function (request, response) {
-  response.json({ response: "success" });
+  response.json({ token: "123456", response: "success" });
 })
 
 app.get('/register', function (request, response) {
