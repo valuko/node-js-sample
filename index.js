@@ -9,13 +9,15 @@ app.get('/', function(request, response) {
 })
 
 app.post('/api/register', function (request, response) {
-  response.setHeader('Content-Type', 'application/json');
-  response.send(JSON.stringify({ response: "success" }));
+  response.json({ response: "success" });
+})
+
+app.get('/register', function (request, response) {
+  response.json({ response: "success" });
 })
 
 app.post('/api/login', function (request, response) {
-  response.setHeader('Content-Type', 'application/json');
-  response.send(JSON.stringify({ token: "123456", response: "success" }));
+  response.json({ token: "123456", response: "success" });
 })
 
 app.listen(app.get('port'), function() {
