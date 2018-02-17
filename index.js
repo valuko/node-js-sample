@@ -38,9 +38,9 @@ app.post('/api/register', function(request, response) {
       "','" +
       reqBody.last_name +
       "','" +
-      reqBody.email_address +
+      reqBody.email+
       "','" +
-      reqBody.currency +
+      reqBody.currency.code +
       "','" +
       sha256(reqBody.password) +
       "')";
