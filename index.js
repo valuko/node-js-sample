@@ -11,13 +11,7 @@ app.use(cors());
 
 app.use(bodyParser.json()); // for parsing application/json
 
-var connection = mysqlConn.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'btex_currency',
-  port: 3307,
-});
+var connection = mysqlConn.createConnection(process.env.CLEARDB_DATABASE_URL);
 
 app.set('port', process.env.PORT || 5000);
 app.use(express.static(__dirname + '/public'));
