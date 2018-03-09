@@ -23,8 +23,7 @@ app.get('/', function(request, response) {
 app.post('/api/register', function(request, response) {
   console.log('Request Body: ', request.body);
   var reqBody = request.body;
-  connection.connect(function(err) {
-    if (err) throw err;
+  
 
     var sql =
       "INSERT INTO users (first_name, last_name, email_address, currency, password) VALUES ('" +
@@ -43,14 +42,13 @@ app.post('/api/register', function(request, response) {
       console.log('Result: ', result.insertId);
       response.json({token: result.insertId, response: 'success'});
     });
-  });
+
 });
 
 app.post('/api/login', function(request, response) {
   console.log('Request Body: ', request.body);
   var reqBody = request.body;
-  connection.connect(function(err) {
-    if (err) throw err;
+
     var sql =
       "SELECT * FROM users WHERE email_address = '" +
       reqBody.email +
@@ -74,8 +72,7 @@ app.post('/api/login', function(request, response) {
         response: 'successfully authenticated',
       });
     });
-  });
-});
+ });
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running at localhost:' + app.get('port'));
