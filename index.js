@@ -87,7 +87,7 @@ app.listen(app.get('port'), function() {
 function isExistingUser(email){
 var sql="SELECT email_address FROM users WHERE email_address ='" + email+ "'";
 connection.query(sql,function(error,result){
-  if (err) throw err;
+  if (error) throw error;
   if (typeof result[0]=='undefinded'){
     return false
   }
