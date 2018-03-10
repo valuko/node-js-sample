@@ -24,7 +24,13 @@ app.post('/api/register', function(request, response) {
   console.log('Request Body: ', request.body);
   var reqBody = request.body;
   
-
+//check if user already exits
+if (isExistingUser(reqBody.email)){
+response.json({
+message: "User with that email already exists"
+});
+return;
+}
     var sql =
       "INSERT INTO users (first_name, last_name, email_address, currency, password) VALUES ('" +
       reqBody.first_name +
@@ -77,3 +83,14 @@ app.post('/api/login', function(request, response) {
 app.listen(app.get('port'), function() {
   console.log('Node app is running at localhost:' + app.get('port'));
 });
+
+function isExistingUser(email){
+var sql="SELECT email_address FROM users WHERE email_address ='" + email+ "'";
+connection.query(sql,function(error,result){
+  if (err) throw err;
+  if (typeof result[0]=='undefinded'){
+    return false
+  }
+  return true;
+});
+}
