@@ -23,33 +23,49 @@ app.get('/', function(request, response) {
 app.post('/api/register', function(request, response) {
   console.log('Request Body: ', request.body);
   var reqBody = request.body;
-  
-//check if user already exits
-if (isExistingUser(reqBody.email)){
-response.json({
-message: "User with that email already exists"
-});
-return;
-}
-    var sql =
-      "INSERT INTO users (first_name, last_name, email_address, currency, password) VALUES ('" +
-      reqBody.first_name +
-      "','" +
-      reqBody.last_name +
-      "','" +
-      reqBody.email+
-      "','" +
-      reqBody.currency.code +
-      "','" +
-      sha256(reqBody.password) +
-      "')";
-    connection.query(sql, function(err, result) {
-      if (err) throw err;
-      console.log('Result: ', result.insertId);
-      response.json({token: result.insertId, response: 'success'});
-    });
 
+  //check if user already exits
+  var sql =
+  "SELECT COUNT(*) AS count from  users WHERE email_address='" + reqBody.email +"'";
+  connection.query(sql,function(error,results){
+if (error){
+  throw error
+}
+if (results[0].count >0){
+  response.json({
+    message:"User with Email already exits"
+  });
+return;
+} else{
+  createNewUser(reqBody,response);
+}
 });
+
+
+function createNewUser(reqBody,response){
+var sql =
+"INSERT INTO users (first_name,last_name,email_address,currency,password";
+  reqBody.first_name +
+  "','" +
+  reqBody.last_name +
+  "','" +
+  reqBody.email+
+  "','" +
+  reqBody.currency.code +
+  "','" +
+  sha256(reqBody.password) +
+  "')";
+connection.query(sql, function(err, result) {
+  if (err) throw err;
+  console.log('Result: ', result.insertId);
+  response.json({token: result.insertId, response: 'success'});
+});
+ } 
+
+
+
+    
+
 
 app.post('/api/login', function(request, response) {
   console.log('Request Body: ', request.body);
