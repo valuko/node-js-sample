@@ -17,20 +17,16 @@ app.set('port', process.env.PORT || 5000);
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(request, response) {
-  response.send('Hello World!,Welcom to John\'s Server');
+  response.send('Hello World!,Welcome to John\'s Server');
 });
 
 app.post('/api/register', function(request, response) {
   console.log('Request Body: ', request.body);
   var reqBody = request.body;
-
-  //check if user already exits
   var sql =
   "SELECT COUNT(*) AS count from  users WHERE email_address='" + reqBody.email +"'";
   connection.query(sql,function(error,results){
-if (error){
-  throw error
-}
+if (error) throw error
 if (results[0].count >0){
   response.json({
     message:"User with Email already exits"
@@ -40,7 +36,7 @@ return;
   createNewUser(reqBody,response);
 }
 });
-
+});
 
 function createNewUser(reqBody,response){
 var sql =
@@ -61,7 +57,7 @@ connection.query(sql, function(err, result) {
   response.json({token: result.insertId, response: 'success'});
 });
  } 
-});
+
 
 
 
