@@ -65,17 +65,17 @@ return;
 
 function createNewUser(reqBody,response){
 var sql =
-"INSERT INTO users (first_name,last_name,email_address,currency,password";
-  reqBody.first_name +
-  "','" +
-  reqBody.last_name +
-  "','" +
-  reqBody.email+
-  "','" +
-  reqBody.currency+
-  "','" +
-  sha256(reqBody.password) +
-  "')";
+"INSERT INTO users (first_name, last_name, email_address, currency, password) VALUES ('" +
+reqBody.first_name +
+"','" +
+reqBody.last_name +
+"','" +
+reqBody.email+
+"','" +
+reqBody.currency +
+"','" +
+sha256(reqBody.password) +
+"')";
 connection.query(sql, function(err, result) {
   if (err) throw err;
   console.log('Result: ', result.insertId);
