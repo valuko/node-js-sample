@@ -43,25 +43,52 @@ app.get('/', function (request, response) {
     response.json({status: "ok!"});
 });
 
-app.post('/api/register', function (request, response) {
-    var reqBody = request.body;
+app.post('/api/register', function(request, response) {
+  console.log('Request Body: ', request.body);
+  var reqBody = request.body;
 
-    //check if user already exist
-    var sql = "SELECT COUNT(*) AS count FROM users WHERE email_address = '" + reqBody.email + "'";
-    connection.query(sql, function (error, results) {
-        if (error) {
-            throw error;
-        }
-
-        if (results[0].count > 0) {
-            response.json({
-                message: "User with that email already exist!"
-            });
-        } else {
-            creationNewUser(reqBody, response);
-        }
-    });
+  //check if user already exits
+  var sql =
+  "SELECT COUNT(*) AS count from  users WHERE email_address='" + reqBody.email +"'";
+  connection.query(sql,function(error,results){
+if (error){
+  throw error;
+}
+if (results[0].count >0){
+  response.json({
+    message:"User with Email already exits"
+  });
+return;
+} else{
+  createNewUser(reqBody,response);
+}
 });
+
+
+function createNewUser(reqBody,response){
+var sql =
+"INSERT INTO users (first_name,last_name,email_address,currency,password";
+  reqBody.first_name +
+  "','" +
+  reqBody.last_name +
+  "','" +
+  reqBody.email+
+  "','" +
+  reqBody.currency.code +
+  "','" +
+  sha256(reqBody.password) +
+  "')";
+connection.query(sql, function(err, result) {
+  if (err) throw err;
+  console.log('Result: ', result.insertId);
+  response.json({token: result.insertId, response: 'success'});
+});
+ } 
+
+
+
+    
+
 
 app.post('/api/login', function (request, response) {
     console.log('Request Body: ', request.body);
@@ -97,24 +124,15 @@ app.listen(app.get('port'), function () {
     console.log('Node app is running at localhost:' + app.get('port'));
 });
 
-function creationNewUser(reqBody, response) {
-    var sql =
-        "INSERT INTO users (first_name, last_name, email_address, currency, password) VALUES ('" +
-        reqBody.first_name +
-        "','" +
-        reqBody.last_name +
-        "','" +
-        reqBody.email +
-        "','" +
-        reqBody.currency +
-        "','" +
-        sha256(reqBody.password) +
-        "')";
+function isExistingUser(email){
+var sql="SELECT email_address FROM users WHERE email_address ='" + email+ "'";
+connection.query(sql,function(error,result){
+  if (error) throw error;
+  if (typeof result[0]=='undefinded'){
+    return false;
+  }
+  return true;
 
-    connection.query(sql, function (err, result) {
-        if (err) throw err;
-
-        console.log('Result: ', result.insertId);
-        response.json({token: result.insertId, response: 'success'});
-    });
+});
 }
+});
