@@ -83,11 +83,6 @@ connection.query(sql, function(err, result) {
 });
  } 
 
-
-
-
-    
-
 app.post('/api/login', function (request, response) {
     console.log('Request Body: ', request.body);
     var reqBody = request.body;
