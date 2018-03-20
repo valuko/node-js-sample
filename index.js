@@ -72,7 +72,7 @@ var sql =
   "','" +
   reqBody.email+
   "','" +
-  reqBody.currency.code +
+  reqBody.currency+
   "','" +
   sha256(reqBody.password) +
   "')";
