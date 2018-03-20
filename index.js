@@ -46,8 +46,6 @@ app.get('/', function (request, response) {
 app.post('/api/register', function(request, response) {
   console.log('Request Body: ', request.body);
   var reqBody = request.body;
-
-  //check if user already exits
   var sql =
   "SELECT COUNT(*) AS count from  users WHERE email_address='" + reqBody.email +"'";
   connection.query(sql,function(error,results){
@@ -63,7 +61,7 @@ return;
   createNewUser(reqBody,response);
 }
 });
-
+});
 
 function createNewUser(reqBody,response){
 var sql =
@@ -87,8 +85,8 @@ connection.query(sql, function(err, result) {
 
 
 
-    
 
+    
 
 app.post('/api/login', function (request, response) {
     console.log('Request Body: ', request.body);
@@ -135,4 +133,4 @@ connection.query(sql,function(error,result){
 
 });
 }
-});
+
